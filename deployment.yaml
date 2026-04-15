@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payroll-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: payroll-app
+  template:
+    metadata:
+      labels:
+        app: payroll-app
+    spec:
+      containers:
+      - name: payroll-app
+        image: rishvanthbkr0709/payroll-system:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payroll-service
+spec:
+  selector:
+    app: payroll-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort
